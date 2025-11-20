@@ -11,10 +11,8 @@ Model name is converted to lowercase for the collection name:
 - BlogPost -> "blogs" collection
 """
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, EmailStr
 from typing import Optional
-
-# Example schemas (replace with your own):
 
 class User(BaseModel):
     """
@@ -22,10 +20,10 @@ class User(BaseModel):
     Collection name: "user" (lowercase of class name)
     """
     name: str = Field(..., description="Full name")
-    email: str = Field(..., description="Email address")
-    address: str = Field(..., description="Address")
-    age: Optional[int] = Field(None, ge=0, le=120, description="Age in years")
+    email: EmailStr = Field(..., description="Email address (unique)")
+    password_hash: str = Field(..., description="BCrypt password hash")
     is_active: bool = Field(True, description="Whether user is active")
+    role: Optional[str] = Field("user", description="Role for authorization")
 
 class Product(BaseModel):
     """
